@@ -2,5 +2,6 @@ namespace MoodMediaKata;
 
 public enum MessageType
 {
-    NewCompany
+    NewCompany,
+    DeleteDevices
 }

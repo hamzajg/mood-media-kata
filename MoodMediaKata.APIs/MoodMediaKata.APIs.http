@@ -1,0 +1,6 @@
+@MoodMediaKata.APIs_HostAddress = http://localhost:5212
+
+GET {{MoodMediaKata.APIs_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

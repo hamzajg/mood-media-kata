@@ -1,6 +1,6 @@
 namespace MoodMediaKata;
 
-public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase)
+public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase, DeleteDevicesUseCase deleteDevicesUseCase)
 {
     public void Process(Message message)
     {
@@ -11,6 +11,9 @@ public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase)
                 createNewCompanyUseCase.Execute(payload!.CompanyName, payload.CompanyCode, 
                     (Licensing)Enum.Parse(typeof(Licensing), payload.Licensing), 
                     payload.Devices.Select(dto=> new Device(dto.SerialNumber, (DeviceType)Enum.Parse(typeof(DeviceType), dto.Type) )));
+                break;
+            case MessageType.DeleteDevices:
+                deleteDevicesUseCase.Execute((message as DeleteDevicesMessage)!.SerialNumbers);
                 break;
             default:
                 throw new NotSupportedException($"{message.MessageType} is not supported.");

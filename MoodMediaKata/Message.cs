@@ -14,3 +14,9 @@ public class NewCompanyMessage : Message
     public string Licensing { get; set; }
     public DeviceDto[] Devices { get; set; }
 }
+
+public class DeleteDevicesMessage : Message
+{
+    public override MessageType MessageType { get; set; } = MessageType.DeleteDevices;
+    public string[] SerialNumbers { get; set; }
+}

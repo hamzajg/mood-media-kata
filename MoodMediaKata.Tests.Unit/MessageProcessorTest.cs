@@ -10,7 +10,9 @@ public class MessageProcessorTest : IDisposable
 
     public MessageProcessorTest()
     {
-        _sut = new MessageProcessor(new CreateCompanyUseCase(_companyRepository, new AddDevicesUseCase(_locationRepository, _deviceRepository)));
+        _sut = new MessageProcessor(new CreateCompanyUseCase(_companyRepository,
+            new AddDevicesUseCase(_locationRepository, _deviceRepository)),
+            new DeleteDevicesUseCase(_deviceRepository));
     }
 
     [Fact]
@@ -36,6 +38,33 @@ public class MessageProcessorTest : IDisposable
         Assert.Equal("Standard", _companyRepository.FindOneById(1)?.Licensing);
         Assert.NotEmpty(_locationRepository.FindAll());
         Assert.NotNull(_locationRepository.FindOneById(1));
+    }
+
+    [Fact]
+    public void CanProcessDeleteDevicesMessageType()
+    {
+        _sut.Process(new NewCompanyMessage
+        {
+            CompanyName = "My Company 1",
+            CompanyCode = "COMP-123", Licensing = "Standard",
+            Devices = new[]
+            {
+                new DeviceDto { SerialNumber = "Serial1", Type = "Standard" },
+                new DeviceDto { SerialNumber = "Serial2", Type = "Custom" }
+            }
+        });
+
+        var message = new DeleteDevicesMessage
+        {
+            SerialNumbers = new[]
+            {
+                "Serial1", "Serial2"
+            }
+        };
+
+        _sut.Process(message);
+
+        Assert.Empty(_deviceRepository.FindAll());
     }
 
     public void Dispose()
