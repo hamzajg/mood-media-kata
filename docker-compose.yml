@@ -1,0 +1,6 @@
+﻿services:
+  moodmediakata:
+    image: moodmediakata
+    build:
+      context: .
+      dockerfile: MoodMediaKata/Dockerfile
