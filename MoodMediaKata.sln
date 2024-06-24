@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.APIs", "MoodM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.WebApp", "MoodMediaKata.WebApp\MoodMediaKata.WebApp.csproj", "{7F8F7861-67BD-49E4-AFF6-1373BB2B6F22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.Infra", "MoodMediaKata.Infra\MoodMediaKata.Infra.csproj", "{23368720-39E9-4D5A-9AD9-DBCA10969ACE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.Tests.Integration", "MoodMediaKata.Tests.Integration\MoodMediaKata.Tests.Integration.csproj", "{8F81CB1C-9F8B-4A07-B8B0-ABF2B7077672}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.App", "MoodMediaKata.App\MoodMediaKata.App.csproj", "{26784B1A-DEB5-4C37-8E74-269330A78210}"
@@ -44,10 +42,6 @@ Global
 		{7F8F7861-67BD-49E4-AFF6-1373BB2B6F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F8F7861-67BD-49E4-AFF6-1373BB2B6F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F8F7861-67BD-49E4-AFF6-1373BB2B6F22}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23368720-39E9-4D5A-9AD9-DBCA10969ACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23368720-39E9-4D5A-9AD9-DBCA10969ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23368720-39E9-4D5A-9AD9-DBCA10969ACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23368720-39E9-4D5A-9AD9-DBCA10969ACE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F81CB1C-9F8B-4A07-B8B0-ABF2B7077672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F81CB1C-9F8B-4A07-B8B0-ABF2B7077672}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F81CB1C-9F8B-4A07-B8B0-ABF2B7077672}.Release|Any CPU.ActiveCfg = Release|Any CPU

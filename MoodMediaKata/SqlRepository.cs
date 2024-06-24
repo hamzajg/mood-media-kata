@@ -1,6 +1,6 @@
 ﻿using MoodMediaKata.App;
 
-namespace MoodMediaKata.Infra;
+namespace MoodMediaKata;
 
 public class SqlRepository<T> : IRepository<T> where T : Entity
 {

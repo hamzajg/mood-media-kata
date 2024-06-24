@@ -1,7 +1,6 @@
 using MoodMediaKata.App;
-using MoodMediaKata.Company;
 
-namespace MoodMediaKata.Infra;
+namespace MoodMediaKata.Company;
 
 public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase, DeleteDevicesUseCase deleteDevicesUseCase)
 {

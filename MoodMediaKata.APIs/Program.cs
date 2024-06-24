@@ -1,3 +1,8 @@
+using EasyNetQ;
+using EasyNetQ.Topology;
+using MoodMediaKata;
+using MoodMediaKata.Infra;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -35,8 +40,11 @@ app.MapGet("/api/companies", () =>
     })
     .WithName("GetCompany")
     .WithOpenApi();
-app.MapPost("/api/companies", (CreateCompanyRequest createCompanyRequest) =>
+app.MapPost("/api/companies", async (CreateCompanyRequest createCompanyRequest) =>
     {
+        using var messageBus = RabbitHutch.CreateBus("host=127.0.0.1:5672;username=guest;password=guest");
+        await messageBus.PubSub.PublishAsync( new CreateCompanyCommand(){Name = createCompanyRequest.Name}, "Q.MoodMediaKata");
+        //await messageBus.PubSub.PublishAsync( new CreateCompanyCommand(){Name = createCompanyRequest.Name});
         companies.Add(createCompanyRequest);
     })
     .WithName("PostCompany")

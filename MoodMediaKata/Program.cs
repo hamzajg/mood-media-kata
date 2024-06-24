@@ -1,12 +1,14 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Configuration;
+using EasyNetQ.AutoSubscribe;
 using Microsoft.Extensions.DependencyInjection;
-using MoodMediaKata.App;
+using MoodMediaKata;
 using MoodMediaKata.Infra;
 
 Console.WriteLine("Hello, World!");
 var services = new ServiceCollection();
 services.RegisterInfrastructure();
 var serviceProvider = services.BuildServiceProvider();
-var repository = serviceProvider.GetService<IRepository<Entity>>();
+await serviceProvider.GetRequiredService<AutoSubscriber>().SubscribeAsync(new[] { typeof(CreateCompanyCommandHandler).Assembly });
+
+Console.ReadLine();

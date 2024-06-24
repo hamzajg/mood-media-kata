@@ -1,6 +1,7 @@
 using MoodMediaKata.App;
+using MoodMediaKata.Infra;
 
-namespace MoodMediaKata.Infra;
+namespace MoodMediaKata;
 
 public class RepositoryFactory
 {

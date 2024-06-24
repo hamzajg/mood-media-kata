@@ -2,7 +2,7 @@ using MoodMediaKata.App;
 using MoodMediaKata.Company;
 using MoodMediaKata.Infra;
 
-namespace MoodMediaKata.Tests.Integration;
+namespace MoodMediaKata.Tests.Unit;
 
 [Collection("SequentialTests")]
 public class MessageProcessorTest : IDisposable
