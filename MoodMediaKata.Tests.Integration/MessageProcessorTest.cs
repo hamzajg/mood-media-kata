@@ -1,10 +1,14 @@
-namespace MoodMediaKata.Tests.Unit;
+using MoodMediaKata.App;
+using MoodMediaKata.Company;
+using MoodMediaKata.Infra;
+
+namespace MoodMediaKata.Tests.Integration;
 
 [Collection("SequentialTests")]
 public class MessageProcessorTest : IDisposable
 {
-    private readonly ICompanyRepository _companyRepository = new InMemoryCompanyRepository();
-    private readonly ILocationRepository _locationRepository = new InMemoryLocationRepository();
+    private readonly IRepository<Company.Company> _companyRepository = new InMemoryRepository<Company.Company>();
+    private readonly IRepository<Location> _locationRepository = new InMemoryRepository<Location>();
     private readonly IDeviceRepository _deviceRepository = new InMemoryDeviceRepository();
     private readonly MessageProcessor _sut;
 

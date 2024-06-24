@@ -1,6 +1,8 @@
-namespace MoodMediaKata;
+using MoodMediaKata.App;
 
-public class AddDevicesUseCase(ILocationRepository locationRepository, IDeviceRepository deviceRepository)
+namespace MoodMediaKata.Company;
+
+public class AddDevicesUseCase(IRepository<Location> locationRepository, IDeviceRepository deviceRepository)
 {
     public IEnumerable<Location> Execute(Company company)
     {

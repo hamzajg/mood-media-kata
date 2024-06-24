@@ -1,3 +1,6 @@
+using MoodMediaKata.App;
+using MoodMediaKata.Company;
+
 namespace MoodMediaKata.Tests.Unit;
 
 [Collection("SequentialTests")]

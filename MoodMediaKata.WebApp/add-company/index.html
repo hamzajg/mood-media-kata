@@ -1,0 +1,80 @@
+<form hx-post="https://localhost:7210/api/companies" hx-ext="json-enc" hx-swap="none">
+    <input type="text" name="name" placeholder="Name" required><br>
+    <input type="text" name="code" placeholder="Code" required><br>
+    <h1>Devices: </h1>
+    <table id="devices">
+        <tbody id="t-body">
+        <tr>
+            <td><label> Serial Number: </label> <input type="text" name="serialNumber"/></td>
+            <td><label> Type: </label> <select name="type">
+                <option value="">Select Type</option>
+                <option value="Standard">Standard</option>
+                <option value="Custom">Custom
+            </select></td>
+            <td>
+                <button type="button" class="btn btn-default add-row">+ Add</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button id="submit" type="submit" class="btn btn-default">Create</button>
+</form>
+
+<template id="row-template">
+    <tr>
+        <td><label> Serial Number: </label> <input type="text" name="serialNumber"></td>
+        <td><label> Type: </label> <select name="type">
+            <option value="">Select Type</option>
+            <option value="Standard">Standard</option>
+            <option value="Custom">Custom
+        </select></td>
+        <td>
+            <button type="button" class="btn btn-default remove-row">- Remove</button>
+        </td>
+    </tr>
+</template>
+
+<script>
+    const addRowButton = document.querySelector('.add-row');
+    const tableBody = document.getElementById('t-body');
+    const rowTemplate = document.getElementById('row-template').content.firstElementChild;
+
+    addRowButton.addEventListener('click', function () {
+        const newRow = rowTemplate.cloneNode(true);
+        const removeRowButton = newRow.querySelector('.remove-row');
+        removeRowButton.addEventListener('click', function () {
+            this.closest('tr').remove();
+        });
+        tableBody.appendChild(newRow);
+    });
+</script>
+<script>
+    document.addEventListener('htmx:configRequest', function (event) {
+        let table = document.getElementById('devices');
+        let tableId = table.id;
+        let data = [];
+        for (let i = 1, row; row = table.rows[i]; i++) {
+            let rowData = {};
+            for (let j = 0, col; col = row.cells[j]; j++) {
+                let input = col.querySelector('input, select');
+                if (input && input.value !== "") {
+                    rowData[input.name] = input.value;
+                }
+            }
+            data.push(rowData);
+        }// Collect data from external inputs
+        let externalInputs = document.querySelectorAll('input');
+        let externalData = {};
+        externalInputs.forEach(input => {
+            externalData[input.name] = input.value;
+        });
+
+        let combinedData = {
+            ...externalData
+        };
+        combinedData[tableId] = data;
+        event.detail.headers['Content-Type'] = 'application/json';
+        event.detail.parameters = (combinedData);
+    });
+</script>

@@ -1,10 +1,13 @@
+using MoodMediaKata.App;
+using MoodMediaKata.Company;
+
 namespace MoodMediaKata.Tests.Unit;
 
 [Collection("SequentialTests")]
 public class QueryCompanyByIdUseCaseTest : IDisposable
 {
-    private readonly ICompanyRepository _companyRepository = new InMemoryCompanyRepository();
-    private readonly ILocationRepository _locationRepository = new InMemoryLocationRepository();
+    private readonly IRepository<Company.Company> _companyRepository = new InMemoryRepository<Company.Company>();
+    private readonly IRepository<Location> _locationRepository = new InMemoryRepository<Location>();
     private readonly IDeviceRepository _deviceRepository = new InMemoryDeviceRepository();
     private readonly CreateCompanyUseCase _createCompanyUseCase;
     private readonly QueryCompanyByIdUseCase _sut;

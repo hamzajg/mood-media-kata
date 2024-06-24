@@ -1,4 +1,4 @@
-namespace MoodMediaKata;
+namespace MoodMediaKata.App;
 
 public static class IdGenerator
 {

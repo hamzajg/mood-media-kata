@@ -5,6 +5,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AE9C8380-9B99-4D34-9F97-C1C894EF2108}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
+		docker-compose.infra.yml = docker-compose.infra.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.Tests.Unit", "MoodMediaKata.Tests.Unit\MoodMediaKata.Tests.Unit.csproj", "{7F8B3AC4-9510-46BC-BBAF-0E9386435ADA}"
@@ -12,6 +13,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.APIs", "MoodMediaKata.APIs\MoodMediaKata.APIs.csproj", "{EA76EACA-BAD0-41C3-A33F-1168EA8D3BD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.WebApp", "MoodMediaKata.WebApp\MoodMediaKata.WebApp.csproj", "{7F8F7861-67BD-49E4-AFF6-1373BB2B6F22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.Infra", "MoodMediaKata.Infra\MoodMediaKata.Infra.csproj", "{23368720-39E9-4D5A-9AD9-DBCA10969ACE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.Tests.Integration", "MoodMediaKata.Tests.Integration\MoodMediaKata.Tests.Integration.csproj", "{8F81CB1C-9F8B-4A07-B8B0-ABF2B7077672}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.App", "MoodMediaKata.App\MoodMediaKata.App.csproj", "{26784B1A-DEB5-4C37-8E74-269330A78210}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodMediaKata.Company", "MoodMediaKata.Company\MoodMediaKata.Company.csproj", "{4591F8C8-C42E-48D3-B4AA-333242C1C052}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,5 +44,21 @@ Global
 		{7F8F7861-67BD-49E4-AFF6-1373BB2B6F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F8F7861-67BD-49E4-AFF6-1373BB2B6F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F8F7861-67BD-49E4-AFF6-1373BB2B6F22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23368720-39E9-4D5A-9AD9-DBCA10969ACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23368720-39E9-4D5A-9AD9-DBCA10969ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23368720-39E9-4D5A-9AD9-DBCA10969ACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23368720-39E9-4D5A-9AD9-DBCA10969ACE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F81CB1C-9F8B-4A07-B8B0-ABF2B7077672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F81CB1C-9F8B-4A07-B8B0-ABF2B7077672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F81CB1C-9F8B-4A07-B8B0-ABF2B7077672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F81CB1C-9F8B-4A07-B8B0-ABF2B7077672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26784B1A-DEB5-4C37-8E74-269330A78210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26784B1A-DEB5-4C37-8E74-269330A78210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26784B1A-DEB5-4C37-8E74-269330A78210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26784B1A-DEB5-4C37-8E74-269330A78210}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4591F8C8-C42E-48D3-B4AA-333242C1C052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4591F8C8-C42E-48D3-B4AA-333242C1C052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4591F8C8-C42E-48D3-B4AA-333242C1C052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4591F8C8-C42E-48D3-B4AA-333242C1C052}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

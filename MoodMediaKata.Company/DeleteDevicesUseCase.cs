@@ -1,4 +1,4 @@
-namespace MoodMediaKata;
+namespace MoodMediaKata.Company;
 
 public class DeleteDevicesUseCase(IDeviceRepository deviceRepository)
 {
