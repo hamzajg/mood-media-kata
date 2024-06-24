@@ -85,7 +85,80 @@ is not important.
 
 ## Solution
 ### Design Overview
+``` mermaid
+graph
 
+    subgraph MoodMediaKata.WebApp
+        style MoodMediaKata.WebApp fill:#9ff,stroke:#333,stroke-width:2px
+        W1[htmx Client Web App]
+    end
+    subgraph MoodMediaKata.APIs
+        style MoodMediaKata.APIs fill:#9f9,stroke:#333,stroke-width:2px
+        API1[Companies REST APIs]
+        API2[MessagingPublisher]
+    end
+
+    subgraph MoodMediaKata
+        style MoodMediaKata fill:#f9f,stroke:#333,stroke-width:2px
+        B1[Startup]
+        B2[Program]
+    end
+
+    subgraph MoodMediaKata.Company
+        style MoodMediaKata.Company fill:#f9f,stroke:#333,stroke-width:2px
+        C1[AddCompanyUseCase]
+        C2[AddDevicesUseCase]
+        c3[DeleteDevicesUseCase]
+        C4[AddDevicesUseCase]
+    end
+
+    subgraph MoodMediaKata.App
+        style MoodMediaKata.App fill:#f9f,stroke:#333,stroke-width:2px
+        A1[Entity]
+        A2[IdGenerator]
+        A3[IRepository]
+        A4[InMemoryRepository]
+    end
+
+    subgraph MoodMediaKata.Infra
+        style MoodMediaKata.Infra fill:#ff9,stroke:#333,stroke-width:2px
+        I1[SqlRepository]
+        I2[MongoDbRepository]
+        I3[QueueBusMessageProcessor]
+        I4[ConsoleMessageProcessor]
+        I5[MessagingSubscriber]
+    end
+```
 ### Use Cases
+```mermaid
+graph
 
+    CreateCompanyUseCase["Create Company Use Case"]
+    DeleteDevicesUseCase["Delete Devices Use Case"]
+    QueryCompanyByIdUseCase["Query Comapny By Id Use Case"]
+
+    style CreateCompanyUseCase fill:#f9c,stroke:#333,stroke-width:2px
+    style DeleteDevicesUseCase fill:#f96,stroke:#333,stroke-width:2px
+    style QueryCompanyByIdUseCase fill:#9cf,stroke:#333,stroke-width:2px
+```
 ### Technologies
+```mermaid
+graph TD
+    RabbitMQ["RabbitMQ"]
+    SQLServer["SQL Server"]
+    Swagger["Swagger"]
+    MongoDB["MongoDB"]
+    Docker["Docker"]
+    HTMX["htmx"]
+    Dapper["Dapper"]
+    EntityFramework["Entity Framework"]
+
+    style RabbitMQ fill:#FFBF00,stroke:#333,stroke-width:2px
+    style SQLServer fill:#E34C26,stroke:#333,stroke-width:2px
+    style Swagger fill:#85EA2D,stroke:#333,stroke-width:2px
+    style MongoDB fill:#47A248,stroke:#333,stroke-width:2px
+    style Docker fill:#2496ED,stroke:#333,stroke-width:2px
+    style HTMX fill:#0C4B33,stroke:#333,stroke-width:2px
+    style Dapper fill:#007ACC,stroke:#333,stroke-width:2px
+    style EntityFramework fill:#68217A,stroke:#333,stroke-width:2px
+```
