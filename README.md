@@ -2,7 +2,7 @@
 ## Kata
 ### Given
 - The database diagram in the databaseDiagram.jpeg file.   
-```
+```mermaid
 erDiagram
     COMPANY {
         Id int PK "Identity"
@@ -30,7 +30,7 @@ erDiagram
 ```
 - Two action/message types:
 - Create Company - json payload can be found in createCompany.json  
-```
+```json
 {
    "Id":"0BA545F1-64C8-487C-988F-1B466A06B30F",
    "MessageType":"NewCompany",
@@ -50,7 +50,7 @@ erDiagram
 }
 ```
 - Delete Devices - json payload can be found in deleteDevices.json  
-```
+```json
 {
    "Id":"0BA545F1-64C8-487C-988F-1B466A06B30F",
    "MessageType": "DeleteDevices",
