@@ -1,7 +1,6 @@
 using EasyNetQ;
-using EasyNetQ.Topology;
-using MoodMediaKata;
-using MoodMediaKata.Infra;
+using Microsoft.AspNetCore.Mvc;
+using MoodMediaKata.App;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +16,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
-
 });
-
 
 var app = builder.Build();
 
@@ -33,34 +30,23 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-List<CreateCompanyRequest> companies = new List<CreateCompanyRequest>();
-app.MapGet("/api/companies", () =>
-    {
-        return companies;
-    })
+app.MapGet("/api/companies", Array.Empty<object>)
     .WithName("GetCompany")
     .WithOpenApi();
-app.MapPost("/api/companies", async (CreateCompanyRequest createCompanyRequest) =>
+
+app.MapPost("/api/companies", async ([FromBody] CreateNewCompanyMessage message) =>
     {
         using var messageBus = RabbitHutch.CreateBus("host=127.0.0.1:5672;username=guest;password=guest");
-        await messageBus.PubSub.PublishAsync( new CreateCompanyCommand(){Name = createCompanyRequest.Name}, "Q.MoodMediaKata");
-        //await messageBus.PubSub.PublishAsync( new CreateCompanyCommand(){Name = createCompanyRequest.Name});
-        companies.Add(createCompanyRequest);
+        await messageBus.PubSub.PublishAsync( message, "Q.MoodMediaKata");
     })
     .WithName("PostCompany")
     .WithOpenApi();
+app.MapDelete("/api/company/{id}/devices", async ( [FromRoute] long id,  [FromBody] DeleteDevicesMessage message) =>
+    {
+        using var messageBus = RabbitHutch.CreateBus("host=127.0.0.1:5672;username=guest;password=guest");
+        await messageBus.PubSub.PublishAsync(message, "Q.MoodMediaKata");
+    })
+    .WithName("DeleteDevices")
+    .WithOpenApi();
 
 app.Run();
-
-public class CreateCompanyRequest
-{
-    public string Name { get; set; }
-    public string Code { get; set; }
-    public DeviceDto[] Devices { get; set; }
-}
-
-public record DeviceDto
-{
-    public string SerialNumber { get; set; }
-    public string Type { get; set; }
-}

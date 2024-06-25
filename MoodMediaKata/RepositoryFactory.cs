@@ -1,22 +1,17 @@
 using MoodMediaKata.App;
-using MoodMediaKata.Infra;
 
 namespace MoodMediaKata;
 
-public class RepositoryFactory
+public static class RepositoryFactory
 {
-    public static IRepository<Entity> CreateRepository(string repositoryType)
+    public static IRepository<T> CreateRepository<T>(string repositoryType) where T : Entity
     {
-        switch (repositoryType)
+        return repositoryType switch
         {
-            case "InMemory":
-                return new InMemoryRepository<Entity>();
-            case "Sql":
-                return new SqlRepository<Entity>();
-            case "MongoDb":
-                return new MongoDbRepository<Entity>();
-            default:
-                throw new ArgumentException("Invalid repository type", nameof(repositoryType));
-        }
+            "InMemory" => new InMemoryRepository<T>(),
+            "Sql" => new SqlRepository<T>(),
+            "MongoDb" => new MongoDbRepository<T>(),
+            _ => throw new ArgumentException("Invalid repository type", nameof(repositoryType))
+        };
     }
 }

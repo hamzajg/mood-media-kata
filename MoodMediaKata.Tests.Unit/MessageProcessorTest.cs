@@ -1,6 +1,5 @@
 using MoodMediaKata.App;
 using MoodMediaKata.Company;
-using MoodMediaKata.Infra;
 
 namespace MoodMediaKata.Tests.Unit;
 
@@ -22,7 +21,7 @@ public class MessageProcessorTest : IDisposable
     [Fact]
     public void CanProcessNewCompanyMessageType()
     {
-        var message = new NewCompanyMessage
+        var message = new CreateNewCompanyMessage
         {
             CompanyName = "My Company 1",
             CompanyCode = "COMP-123", Licensing = "Standard",
@@ -47,7 +46,7 @@ public class MessageProcessorTest : IDisposable
     [Fact]
     public void CanProcessDeleteDevicesMessageType()
     {
-        _sut.Process(new NewCompanyMessage
+        _sut.Process(new CreateNewCompanyMessage
         {
             CompanyName = "My Company 1",
             CompanyCode = "COMP-123", Licensing = "Standard",

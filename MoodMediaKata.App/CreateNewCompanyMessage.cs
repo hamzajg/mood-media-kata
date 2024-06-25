@@ -1,6 +1,6 @@
 namespace MoodMediaKata.App;
 
-public class NewCompanyMessage : Message
+public class CreateNewCompanyMessage : Message
 {
     public override MessageType MessageType { get; set; } = MessageType.NewCompany;
     public string CompanyName { get; set; }
