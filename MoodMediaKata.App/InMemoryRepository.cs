@@ -6,10 +6,10 @@ public class InMemoryRepository<T> : IRepository<T> where T : Entity
 {
     protected readonly IDictionary<long, T> Store = new ConcurrentDictionary<long, T>();
 
-    public T Save(T entity)
+    public Task<T> Save(T entity)
     {
         Store.Add(entity.Id, entity);
-        return entity;
+        return Task.FromResult(entity);
     }
 
     public IEnumerable<T> FindAll() => Store.Values;

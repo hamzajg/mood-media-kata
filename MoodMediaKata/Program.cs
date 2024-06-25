@@ -5,11 +5,16 @@ using MoodMediaKata;
 using MoodMediaKata.Company;
 
 Console.WriteLine("Hello, World!");
+
 var services = new ServiceCollection();
+services.InitializeDatabase(args);
 services.AddRepositories(args);
 services.AddUseCases();
 services.RegisterInfrastructure(args);
+
 var serviceProvider = services.BuildServiceProvider();
-//await serviceProvider.GetRequiredService<AutoSubscriber>().SubscribeAsync(new[] { typeof(CreateNewCompanyMessageHandler).Assembly });
+
 serviceProvider.AddMessageHandler();
+serviceProvider.GetService<IDatabaseInitializer>()?.InitializeDatabase();
+
 Console.ReadLine();

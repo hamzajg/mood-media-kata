@@ -8,6 +8,18 @@ namespace MoodMediaKata;
 
 public static class InfrastructureRegistration
 {
+    public static void InitializeDatabase(this IServiceCollection services, string[] args)
+    {
+        string databaseOrmType = null;
+        if (args.Length > 0)
+            databaseOrmType = args.FirstOrDefault(a => a.StartsWith("--db-orm="));
+        
+        if (string.IsNullOrEmpty(databaseOrmType))
+            throw new ArgumentException("databaseOrmType must be provided as a runtime argument.");
+        
+        services.AddSingleton(DatabaseInitializerFactory.InitializeDatabase(databaseOrmType.Split("=")[1], services));
+    }
+
     public static IServiceCollection AddRepositories(this IServiceCollection services, string[] args)
     {
         string repositoryType = null;
@@ -17,8 +29,8 @@ public static class InfrastructureRegistration
         if (string.IsNullOrEmpty(repositoryType))
             throw new ArgumentException("repository must be provided as a runtime argument.");
         
-        services.AddSingleton<IRepository<Company.Company>>(_ => RepositoryFactory.CreateRepository<Company.Company>(repositoryType.Split("=")[1]));
-        services.AddSingleton<IRepository<Location>>(_ => RepositoryFactory.CreateRepository<Location>(repositoryType.Split("=")[1]));
+        services.AddSingleton<IRepository<Company.Company>>(provider => RepositoryFactory.CreateRepository<Company.Company>(repositoryType.Split("=")[1], provider));
+        services.AddSingleton<IRepository<Location>>(provider => RepositoryFactory.CreateRepository<Location>(repositoryType.Split("=")[1], provider));
         services.AddSingleton<IDeviceRepository, InMemoryDeviceRepository>();
         return services;
     }
@@ -28,11 +40,6 @@ public static class InfrastructureRegistration
         services.AddSingleton(RabbitHutch.CreateBus("host=127.0.0.1:5672;username=guest;password=guest"));
         services.AddSingleton<MessageProcessor>(); 
         services.AddSingleton<MessageDispatcher>(); 
-
-        /*services.AddSingleton(s => new AutoSubscriber(s.GetService<IBus>(), "subscription_id")
-        {
-            AutoSubscriberMessageDispatcher = new DefaultAutoSubscriberMessageDispatcher(s.GetService<IServiceResolver>())
-        });*/
         services.AddScoped<CreateNewCompanyMessageHandler>();
         
         string messageProcessorType = null;

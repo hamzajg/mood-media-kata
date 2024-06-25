@@ -14,9 +14,30 @@ services:
     ports:
       - "1433:1433"
     environment:
-      SA_PASSWORD: "VeryS3cr3t"
+      SA_PASSWORD: "V3ryS3cr3t"
       ACCEPT_EULA: "Y"
 
+  postgres:
+    image: postgres:14.2
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: V3ryS3cr3t
+      POSTGRES_DB: kata_db
+
+  postgres_admin:
+    image: dpage/pgadmin4
+    container_name: postgres_admin
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: Admin@123
+    depends_on:
+      - postgres
+    
   mongodb:
     image: mongo:latest
     ports:
@@ -24,3 +45,14 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: "root"
       MONGO_INITDB_ROOT_PASSWORD: "root"
+      
+  mongodb_admin:
+    image: mongo-express
+    container_name: mongodb_admin
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: V3ryS3cr3t
+    depends_on:
+      - mongodb

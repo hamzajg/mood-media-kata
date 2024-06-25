@@ -10,6 +10,11 @@ public sealed class Company : Entity
     public string Code { get; private set; }
     public string Licensing { get; private set; }
 
+    public Company()
+    {
+        Id = IdGenerator.NextId(nameof(Company));
+    }
+    
     public Company(string name, string code, Licensing licensing, IEnumerable<Device> devices)
     {
         Id = IdGenerator.NextId(nameof(Company));
@@ -29,19 +34,41 @@ public sealed class Company : Entity
     }
 }
 
-public class Device(string serialNumber, DeviceType type) : Entity
-{ 
-    public string SerialNumber { get; private set; } = serialNumber;
-    public string Type { get; private set; } = type.ToString();
+public class Device : Entity
+{
+    public Device()
+    {
+    }
+    
+    public Device(string serialNumber, DeviceType type)
+    {
+        SerialNumber = serialNumber;
+        Type = type.ToString();
+    }
+    
+    public string SerialNumber { get; private set; }
+    public string Type { get; private set; }
 
     public override long Id { get; protected set; } = IdGenerator.NextId(nameof(Device));
 }
 
-public class Location(string name, string address, Device device) : Entity
+public class Location : Entity
 {
-    public string Name { get; private set; } = name;
-    public string Address { get; private set; } = address;
-    public Device Device { get; private set; } = device;
+    public Location()
+    {
+        
+    }
+
+    public Location(string name, string address, Device device)
+    {
+        Name = name;
+        Address = address;
+        Device = device;
+    }
+    
+    public string Name { get; private set; }
+    public string Address { get; private set; }
+    public Device Device { get; private set; }
     public override long Id { get; protected set; } = IdGenerator.NextId(nameof(Location));
 
 }

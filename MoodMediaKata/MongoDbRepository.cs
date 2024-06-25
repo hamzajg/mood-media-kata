@@ -4,7 +4,7 @@ namespace MoodMediaKata;
 
 public class MongoDbRepository<T> : IRepository<T> where T : Entity
 {
-    public T Save(T entity)
+    public Task<T> Save(T entity)
     {
         throw new NotImplementedException();
     }

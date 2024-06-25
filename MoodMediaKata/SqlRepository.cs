@@ -2,11 +2,14 @@
 
 namespace MoodMediaKata;
 
-public class SqlRepository<T> : IRepository<T> where T : Entity
+public class SqlRepository<T>(KataDbContext context) : IRepository<T>
+    where T : Entity
 {
-    public T Save(T entity)
+    public async Task<T> Save(T entity)
     {
-        throw new NotImplementedException();
+        context.Companies.Add(entity as Company.Company);
+        await context.SaveChangesAsync();
+        return entity;
     }
 
     public IEnumerable<T> FindAll()

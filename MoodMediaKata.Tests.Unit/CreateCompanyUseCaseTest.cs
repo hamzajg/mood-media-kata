@@ -16,9 +16,9 @@ public class CreateCompanyUseCaseTest : IDisposable
     }
 
     [Fact]
-    public void CanCreateNewCompanyWithLocationsAndDevices()
+    public async void CanCreateNewCompanyWithLocationsAndDevices()
     {
-        var result = _sut.Execute("My Company 1", "COMP-123", Licensing.Standard,
+        var result = await _sut.Execute("My Company 1", "COMP-123", Licensing.Standard,
             new[] { new Device("1", DeviceType.Standard), new Device("2", DeviceType.Custom) });
 
         Assert.Equal(1, result.Id);
