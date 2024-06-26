@@ -34,6 +34,6 @@ public class QueryCompanyByIdMessageHandler(IBus bus, MessageProcessor messagePr
         const string queueName = "Q.MoodMediaKata";
         await bus.PubSub.PublishAsync(
             new QueryCompanyByIdResultMessage
-                { Company = new CompanyDto { Id = result.Id, Name = result.Name, Code = result.Code } }, queueName);
+                { Company = new CompanyDto { Id = result.Id, Name = result.Name, Code = result.Code , Licensing = result.Licensing } }, queueName);
     }
 }

@@ -6,10 +6,15 @@ namespace MoodMediaKata.Company;
 
 public sealed class Company : Entity
 {
+    private string _licencing;
     public IEnumerable<Location> Locations { get; } = new List<Location>();
     public string Name { get; private set; }
     public string Code { get; private set; }
-    public string Licensing { get; private set; }
+    public string Licensing
+    {
+        get => _licencing;
+        private set => _licencing = int.TryParse(value, out var intValue) ? ((Licensing) intValue).ToString() : value;
+    }
 
     public Company()
     {
