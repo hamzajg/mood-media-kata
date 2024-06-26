@@ -2,13 +2,13 @@ using MoodMediaKata.Infra;
 
 namespace MoodMediaKata.Messaging;
 
-public class MessageProcessorFactory
+public static class MessageProcessorFactory
 {
     public static IMessageProcessor CreateMessageProcessor(string messageProcessorType)
     {
         switch (messageProcessorType)
         {
-            case "QueueBus":
+            case "RabbitMq":
                 return new QueueBusMessageProcessor();
             case "Console":
                 return new ConsoleMessageProcessor();

@@ -26,12 +26,21 @@ public static class DatabaseInitializerFactory
                 services.AddDbContext<KataDbContext>();
                 dbContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(20));
                 return new DatabaseEfInitializer(dbContext);
+            case "none":
+                return new NoneDatabaseInitializer();
             default:
                 throw new ArgumentException("Invalid repository type", nameof(databaseOrmType));
         }
     }
 }
 
+public class NoneDatabaseInitializer : IDatabaseInitializer
+{
+    public void InitializeDatabase()
+    {
+        Console.WriteLine(nameof(NoneDatabaseInitializer));
+    }
+}
 
 public interface IDatabaseInitializer
 {

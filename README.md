@@ -158,3 +158,36 @@ graph TD
     style Dapper fill:#007ACC,stroke:#333,stroke-width:2px
     style EntityFramework fill:#68217A,stroke:#333,stroke-width:2px
 ```
+
+## Usage
+1. Run Infrastructure:  
+```sh
+docker compose -f docker-compose.infra.yml up
+```
+
+2. Run MoodMediaKata.APIs:  
+```sh
+cd MoodMediaKata.APIs
+dotnet build
+dotnet run
+```
+
+3. Run MoodMediaKata 
+This project support multi setup and tools at runtime, by entering the args values for `--db-orm=[dapper/ef]`, `--repository=[InMemory/PostgreSql/Sql/MongoDb]` and `--message-processor=[RabbitMq/Console]`.
+
+- No ORM & InMemory Repositoty & RabbitMq MessageProcessor
+```sh
+dotnet run --db-orm=none --repository=InMemory --message-processor=rabbitmq
+```
+- Dapper ORM & PostgresSql Repositoty & RabbitMq MessageProcessor
+```sh
+dotnet run --db-orm=dapper --repository=PostgreSql --message-processor=rabbitmq
+```
+- EntityFramework ORM & SqlServer Repositoty & RabbitMq MessageProcessor
+```sh
+dotnet run --db-orm=ef --repository=Sql --message-processor=rabbitmq
+```
+- EntityFramework ORM & MongoDb Repositoty & RabbitMq MessageProcessor
+```sh
+dotnet run --db-orm=ef --repository=MongoDb --message-processor=rabbitmq
+```
