@@ -1,41 +1,30 @@
 using System.Data;
 using Dapper;
-using Microsoft.Extensions.DependencyInjection;
-using Npgsql;
 
 namespace MoodMediaKata;
 
-public class DatabaseDapperInitializer(IServiceCollection services) : IDatabaseInitializer
+public class DatabaseDapperInitializer(IDbConnection dbConnection) : IDatabaseInitializer
 {
     public void InitializeDatabase()
     {
-        var dbConnection =
-            new NpgsqlConnection("Host=localhost;Username=postgres;Password=V3ryS3cr3t;Database=kata_db;");
-
-        using var newConnection = dbConnection;
-        newConnection.Open();
-
-        newConnection.Execute(Resources.Schema);
-        if (!newConnection
+        dbConnection.Execute(Resources.Schema);
+        if (!dbConnection
                 .Query<dynamic>(
                     "SELECT 1 FROM information_schema.tables WHERE table_schema = 'kata_schema' AND table_name = 'company'")
                 .Any())
-            newConnection.Execute(Resources.CompanyTable);
+            dbConnection.Execute(Resources.CompanyTable);
 
-        if (!newConnection
+        if (!dbConnection
                 .Query<dynamic>(
                     "SELECT 1 FROM information_schema.tables WHERE table_schema = 'kata_schema' AND table_name = 'location'")
                 .Any())
-            newConnection.Execute(Resources.LocationTable);
+            dbConnection.Execute(Resources.LocationTable);
 
-        if (!newConnection
+        if (!dbConnection
                 .Query<dynamic>(
                     "SELECT 1 FROM information_schema.tables WHERE table_schema = 'kata_schema' AND table_name = 'device'")
                 .Any())
-            newConnection.Execute(Resources.DeviceTable);
-
-        newConnection.Close();
-        services.AddSingleton<IDbConnection>(dbConnection);
+            dbConnection.Execute(Resources.DeviceTable);
     }
 }
 

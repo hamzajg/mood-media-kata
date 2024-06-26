@@ -1,21 +1,14 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using MoodMediaKata.Company;
 
 namespace MoodMediaKata;
 
-public class DatabaseEfInitializer(IServiceCollection services) : IDatabaseInitializer
+public class DatabaseEfInitializer(KataDbContext dbContext) : IDatabaseInitializer
 {
     public void InitializeDatabase()
     {
-        var optionsBuilder = new DbContextOptionsBuilder<KataDbContext>();
-        optionsBuilder.UseSqlServer("Server=localhost;Database=kata_db;User Id=sa;Password=V3ryS3cr3t;");
-
-        var _dbContext = new KataDbContext(optionsBuilder.Options);
-        services.AddDbContext<KataDbContext>();
-        _dbContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(20));
-        using var connection = _dbContext.Database.GetDbConnection();
+        using var connection = dbContext.Database.GetDbConnection();
 
         // Check if the database exists
         if (connection.State == ConnectionState.Closed)
@@ -24,7 +17,7 @@ public class DatabaseEfInitializer(IServiceCollection services) : IDatabaseIniti
         if (!connection.GetSchema("tables").Rows.Cast<DataRow>().Any(
                 row => row.Field<string>("table_name").Equals("Companies", StringComparison.OrdinalIgnoreCase)))
         {
-            _dbContext.Database.ExecuteSqlRaw(@"
+            dbContext.Database.ExecuteSqlRaw(@"
                     CREATE SCHEMA kata_schema;
 
                     CREATE TABLE kata_schema.Company (

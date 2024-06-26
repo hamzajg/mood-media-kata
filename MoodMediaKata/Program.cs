@@ -7,14 +7,13 @@ using MoodMediaKata.Company;
 Console.WriteLine("Hello, World!");
 
 var services = new ServiceCollection();
-services.InitializeDatabase(args);
-services.AddRepositories(args);
-services.AddUseCases();
-services.RegisterInfrastructure(args);
+services.InitializeDatabase(args)
+    .AddRepositories(args)
+    .AddUseCases()
+    .RegisterInfrastructure(args);
 
-var serviceProvider = services.BuildServiceProvider();
-
-serviceProvider.AddMessageHandler();
+var serviceProvider = services.BuildServiceProvider()
+    .AddMessageHandler();
 serviceProvider.GetService<IDatabaseInitializer>()?.InitializeDatabase();
 
 Console.ReadLine();

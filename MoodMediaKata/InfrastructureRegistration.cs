@@ -8,16 +8,19 @@ namespace MoodMediaKata;
 
 public static class InfrastructureRegistration
 {
-    public static void InitializeDatabase(this IServiceCollection services, string[] args)
+
+    public static IServiceCollection InitializeDatabase(this IServiceCollection services, string[] args)
     {
         string databaseOrmType = null;
         if (args.Length > 0)
             databaseOrmType = args.FirstOrDefault(a => a.StartsWith("--db-orm="));
-        
+
         if (string.IsNullOrEmpty(databaseOrmType))
             throw new ArgumentException("databaseOrmType must be provided as a runtime argument.");
         
         services.AddSingleton(DatabaseInitializerFactory.InitializeDatabase(databaseOrmType.Split("=")[1], services));
+        
+        return services;
     }
 
     public static IServiceCollection AddRepositories(this IServiceCollection services, string[] args)
@@ -31,7 +34,8 @@ public static class InfrastructureRegistration
         
         services.AddSingleton<IRepository<Company.Company>>(provider => RepositoryFactory.CreateRepository<Company.Company>(repositoryType.Split("=")[1], provider));
         services.AddSingleton<IRepository<Location>>(provider => RepositoryFactory.CreateRepository<Location>(repositoryType.Split("=")[1], provider));
-        services.AddSingleton<IDeviceRepository, InMemoryDeviceRepository>();
+        services.AddSingleton<IRepository<Device>>(provider => RepositoryFactory.CreateRepository<Device>(repositoryType.Split("=")[1], provider));
+
         return services;
     }
     

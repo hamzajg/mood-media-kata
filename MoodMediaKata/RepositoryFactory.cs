@@ -12,7 +12,7 @@ public static class RepositoryFactory
         return repositoryType switch
         {
             "InMemory" => new InMemoryRepository<T>(),
-            "PostgreSql" => new PostgreSqlRepository<T>(provider.GetService<NpgsqlConnection>()),
+            "PostgreSql" => new PostgreSqlRepository<T>(provider.GetRequiredService<IDbConnection>()),
             "Sql" => new SqlRepository<T>(provider.GetRequiredService<KataDbContext>()),
             "MongoDb" => new MongoDbRepository<T>(),
             _ => throw new ArgumentException("Invalid repository type", nameof(repositoryType))

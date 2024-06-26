@@ -29,7 +29,9 @@ public sealed class Company : Entity
         var index = 1;
         foreach (var device in devices)
         {
-            ((IList) Locations).Add(new Location($"Location {index++}", "", device));
+            var location = new Location($"Location {index++}", "", device, this);
+            ((IList) Locations).Add(location);
+            device.AddLocation(location);
         }
     }
 }
@@ -50,6 +52,12 @@ public class Device : Entity
     public string Type { get; private set; }
 
     public override long Id { get; protected set; } = IdGenerator.NextId(nameof(Device));
+    public Location Location { get; private set; }
+
+    public void AddLocation(Location location)
+    {
+        Location = location;
+    }
 }
 
 public class Location : Entity
@@ -59,18 +67,19 @@ public class Location : Entity
         
     }
 
-    public Location(string name, string address, Device device)
+    public Location(string name, string address, Device device, Company company)
     {
         Name = name;
         Address = address;
         Device = device;
+        Company = company;
     }
     
     public string Name { get; private set; }
     public string Address { get; private set; }
     public Device Device { get; private set; }
     public override long Id { get; protected set; } = IdGenerator.NextId(nameof(Location));
-
+    public Company Company { get; private set; }
 }
 
 public enum DeviceType
