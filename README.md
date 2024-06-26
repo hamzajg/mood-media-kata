@@ -173,8 +173,14 @@ dotnet run
 ```
 
 3. Run MoodMediaKata 
-This project support multi setup and tools at runtime, by entering the args values for `--db-orm=[dapper/ef]`, `--repository=[InMemory/PostgreSql/Sql/MongoDb]` and `--message-processor=[RabbitMq/Console]`.
+This project support multi setup and tools at runtime, by entering the args values for `--db-orm=[none/dapper/ef]`, `--repository=[InMemory/PostgreSql/Sql/MongoDb]` and `--message-processor=[RabbitMq/Console]`.  
 
+Build:
+```sh
+cd MoodMediaKata
+dotnet build
+```
+Run:
 - No ORM & InMemory Repositoty & RabbitMq MessageProcessor
 ```sh
 dotnet run --db-orm=none --repository=InMemory --message-processor=rabbitmq
