@@ -1,4 +1,5 @@
 using System.Data;
+using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using MoodMediaKata.App;
 using MoodMediaKata.Company;
@@ -34,7 +35,7 @@ public static class RepositoryFactory
 
 public class MongoDeviceDbRepository : MongoDbRepository<Device>, IDeviceRepository
 {
-    public void DeleteDeviceBySerialNumber(string serialNumber)
+    public Task DeleteDeviceBySerialNumber(string serialNumber)
     {
         throw new NotImplementedException();
     }
@@ -43,7 +44,7 @@ public class MongoDeviceDbRepository : MongoDbRepository<Device>, IDeviceReposit
 public class SqlDeviceRepository(KataDbContext context) : SqlRepository<Device>(context), IDeviceRepository
 {
 
-    public void DeleteDeviceBySerialNumber(string serialNumber)
+    public Task DeleteDeviceBySerialNumber(string serialNumber)
     {
         throw new NotImplementedException();
     }
@@ -51,8 +52,9 @@ public class SqlDeviceRepository(KataDbContext context) : SqlRepository<Device>(
 
 public class PostgreSqlDeviceRepository(IDbConnection dbConnection) : PostgreSqlRepository<Device>(dbConnection), IDeviceRepository
 {
-    public void DeleteDeviceBySerialNumber(string serialNumber)
+    public async Task DeleteDeviceBySerialNumber(string serialNumber)
     {
-        throw new NotImplementedException();
+        var sql = $"DELETE FROM kata_schema.device WHERE serialnumber = '{serialNumber}'";
+        await dbConnection.ExecuteAsync(sql);
     }
 }

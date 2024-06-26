@@ -16,15 +16,15 @@ public class DeleteDevicesUseCaseTest : IDisposable
     }
 
     [Fact]
-    public void CanDeleteDevicesByGivenSerialNumbers()
+    public async void CanDeleteDevicesByGivenSerialNumbers()
     {
         _deviceRepository.Save(new Device("Serial1", DeviceType.Standard));
         _deviceRepository.Save(new Device("Serial2", DeviceType.Custom));
 
-        _sut.Execute(new [] { "Serial1", "Serial2" });
+        await _sut.Execute(new [] { "Serial1", "Serial2" });
         
-        Assert.Null(_deviceRepository.FindOneById(1));
-        Assert.Null(_deviceRepository.FindOneById(2));
+        Assert.Null(await _deviceRepository.FindOneById(1));
+        Assert.Null(await _deviceRepository.FindOneById(2));
     }
     
     public void Dispose()

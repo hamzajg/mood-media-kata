@@ -14,7 +14,7 @@ public class MongoDbRepository<T> : IRepository<T> where T : Entity
         throw new NotImplementedException();
     }
 
-    public T? FindOneById(long id)
+    public Task<T?> FindOneById(long id)
     {
         throw new NotImplementedException();
     }

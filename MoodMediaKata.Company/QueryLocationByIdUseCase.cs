@@ -4,5 +4,5 @@ namespace MoodMediaKata.Company;
 
 public class QueryLocationByIdUseCase(IRepository<Location> locationRepository)
 {
-    public Location? Execute(long id) => locationRepository.FindOneById(id);
+    public async Task<Location?> Execute(long id) => await locationRepository.FindOneById(id);
 }

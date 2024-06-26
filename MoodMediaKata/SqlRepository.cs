@@ -17,7 +17,7 @@ public class SqlRepository<T>(KataDbContext context) : IRepository<T>
         throw new NotImplementedException();
     }
 
-    public T? FindOneById(long id)
+    public Task<T?> FindOneById(long id)
     {
         throw new NotImplementedException();
     }

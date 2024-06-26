@@ -4,5 +4,5 @@ namespace MoodMediaKata.Company;
 
 public interface IDeviceRepository : IRepository<Device>
 {
-    void DeleteDeviceBySerialNumber(string serialNumber);
+    Task DeleteDeviceBySerialNumber(string serialNumber);
 }

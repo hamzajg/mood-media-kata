@@ -19,7 +19,7 @@ public class MessageProcessorTest : IDisposable
     }
 
     [Fact]
-    public void CanProcessNewCompanyMessageType()
+    public async void CanProcessNewCompanyMessageType()
     {
         var message = new CreateNewCompanyMessage
         {
@@ -31,20 +31,20 @@ public class MessageProcessorTest : IDisposable
             }
         };
 
-        _sut.Process(message);
+        await _sut.Process(message);
 
         Assert.NotEmpty(_companyRepository.FindAll());
-        Assert.NotNull(_companyRepository.FindOneById(1));
-        Assert.Equal(1, _companyRepository.FindOneById(1)?.Id);
-        Assert.Equal("My Company 1", _companyRepository.FindOneById(1)?.Name);
-        Assert.Equal("COMP-123", _companyRepository.FindOneById(1)?.Code);
-        Assert.Equal("Standard", _companyRepository.FindOneById(1)?.Licensing);
+        Assert.NotNull(await _companyRepository.FindOneById(1));
+        Assert.Equal(1, (await _companyRepository.FindOneById(1))?.Id);
+        Assert.Equal("My Company 1", (await _companyRepository.FindOneById(1))?.Name);
+        Assert.Equal("COMP-123", (await _companyRepository.FindOneById(1))?.Code);
+        Assert.Equal("Standard", (await _companyRepository.FindOneById(1))?.Licensing);
         Assert.NotEmpty(_locationRepository.FindAll());
-        Assert.NotNull(_locationRepository.FindOneById(1));
+        Assert.NotNull(await _locationRepository.FindOneById(1));
     }
 
     [Fact]
-    public void CanProcessDeleteDevicesMessageType()
+    public async void CanProcessDeleteDevicesMessageType()
     {
         _sut.Process(new CreateNewCompanyMessage
         {
@@ -65,7 +65,7 @@ public class MessageProcessorTest : IDisposable
             }
         };
 
-        _sut.Process(message);
+        await _sut.Process(message);
 
         Assert.Empty(_deviceRepository.FindAll());
     }

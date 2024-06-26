@@ -54,8 +54,10 @@ public class PostgreSqlRepository<T>(IDbConnection dbConnection) : IRepository<T
         throw new NotImplementedException();
     }
 
-    public T? FindOneById(long id)
+    public async Task<T?> FindOneById(long id)
     {
-        throw new NotImplementedException();
+        var sql = $"SELECT * FROM kata_schema.{typeof(T).Name} WHERE id = {id}";
+        var result = await dbConnection.QuerySingleOrDefaultAsync<T>(sql);
+        return result;
     }
 }

@@ -14,5 +14,5 @@ public class InMemoryRepository<T> : IRepository<T> where T : Entity
 
     public IEnumerable<T> FindAll() => Store.Values;
 
-    public T? FindOneById(long id) => Store.ToDictionary().GetValueOrDefault(id);
+    public Task<T?> FindOneById(long id) => Task.FromResult(Store.ToDictionary().GetValueOrDefault(id));
 }

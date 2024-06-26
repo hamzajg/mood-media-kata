@@ -61,4 +61,21 @@ public class PostgreSqlRepositoryTest
             
         Assert.NotNull(result);
     }
+    
+    [Fact]
+    public async void CanDeleteDeviceEntity()
+    {
+        var repository = RepositoryFactory.CreateRepository<Company.Company>("PostgreSql", _provider);
+        var locationRepository = RepositoryFactory.CreateRepository<Location>("PostgreSql", _provider);
+        var deviceRepository = RepositoryFactory.CreateRepository<IDeviceRepository, Device>("PostgreSql", _provider);
+        var company = new Company.Company("New Company 1", $"COMP-123-{new Random().Next()}",
+            Licensing.Standard, new[] { new Device($"SerialNumber-1", DeviceType.Standard) });
+        await repository.Save(company);
+        await locationRepository.Save(company.Locations.ElementAt(0));
+        await deviceRepository.Save(company.Locations.ElementAt(0).Device);
+
+        await deviceRepository.DeleteDeviceBySerialNumber("SerialNumber-1");
+            
+        Assert.Null(await deviceRepository.FindOneById(company.Locations.ElementAt(0).Device.Id));
+    }
 }
