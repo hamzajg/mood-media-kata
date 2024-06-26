@@ -34,8 +34,8 @@ public static class InfrastructureRegistration
         
         services.AddSingleton<IRepository<Company.Company>>(provider => RepositoryFactory.CreateRepository<Company.Company>(repositoryType.Split("=")[1], provider));
         services.AddSingleton<IRepository<Location>>(provider => RepositoryFactory.CreateRepository<Location>(repositoryType.Split("=")[1], provider));
-        services.AddSingleton<IRepository<Device>>(provider => RepositoryFactory.CreateRepository<Device>(repositoryType.Split("=")[1], provider));
-
+        services.AddSingleton<IDeviceRepository>(provider => RepositoryFactory.CreateRepository<IDeviceRepository, Device>(repositoryType.Split("=")[1], provider));
+        
         return services;
     }
     

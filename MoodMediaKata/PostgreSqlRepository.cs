@@ -10,41 +10,43 @@ public class PostgreSqlRepository<T>(IDbConnection dbConnection) : IRepository<T
 {
     public async Task<T> Save(T entity)
     {
-        if (entity is Company.Company)
+        switch (entity)
         {
-            var sql =
-                "INSERT INTO kata_schema.company (id, name, code, licensing) VALUES (@Id, @Name, @Code, @Licensing)";
-            var company = entity as Company.Company;
-            await dbConnection.ExecuteAsync(sql, new
+            case Company.Company company:
             {
-                company.Id, company.Name, company.Code,
-                Licensing = (int)Enum.Parse<Licensing>(company.Licensing)
-            });
-            return entity;
-        } else if (entity is Location)
-        {
-            var sql =
-                "INSERT INTO kata_schema.location (id, name, address, parentId) VALUES (@Id, @Name, @Address, @ParentId)";
-            var location = entity as Location;
-            await dbConnection.ExecuteAsync(sql, new
+                var sql =
+                    "INSERT INTO kata_schema.company (id, name, code, licensing) VALUES (@Id, @Name, @Code, @Licensing)";
+                await dbConnection.ExecuteAsync(sql, new
+                {
+                    company.Id, company.Name, company.Code,
+                    Licensing = (int)Enum.Parse<Licensing>(company.Licensing)
+                });
+                return entity;
+            }
+            case Location location:
             {
-                location.Id, location.Name, location.Address, ParentId = location.Company.Id
-            });
+                var sql =
+                    "INSERT INTO kata_schema.location (id, name, address, parentId) VALUES (@Id, @Name, @Address, @ParentId)";
+                await dbConnection.ExecuteAsync(sql, new
+                {
+                    location.Id, location.Name, location.Address, ParentId = location.Company.Id
+                });
 
-            return entity;
-        } else if (entity is Device)
-        {
-            var sql =
-                "INSERT INTO kata_schema.device (id, serialnumber, type, locationId) VALUES (@Id, @SerialNumber, @Type, LocationId)";
-            var device = entity as Device;
-            await dbConnection.ExecuteAsync(sql, new
+                return entity;
+            }
+            case Device device:
             {
-                device.Id, device.SerialNumber, Type = (int)Enum.Parse<DeviceType>(device.Type), LocationId = device.Location.Id
-            });
-            return entity;
+                var sql =
+                    "INSERT INTO kata_schema.device (id, serialnumber, type, locationId) VALUES (@Id, @SerialNumber, @Type, @LocationId)";
+                await dbConnection.ExecuteAsync(sql, new
+                {
+                    device.Id, device.SerialNumber, Type = (int)Enum.Parse<DeviceType>(device.Type), LocationId = device.Location.Id
+                });
+                return entity;
+            }
+            default:
+                throw new ArgumentException($"Unsupported Entity Type {entity}");
         }
-
-        throw new ArgumentException($"Unsupported Entity Type {entity}");
     }
 
     public IEnumerable<T> FindAll()

@@ -51,7 +51,7 @@ public class PostgreSqlRepositoryTest
     {
         var repository = RepositoryFactory.CreateRepository<Company.Company>("PostgreSql", _provider);
         var locationRepository = RepositoryFactory.CreateRepository<Location>("PostgreSql", _provider);
-        var deviceRepository = RepositoryFactory.CreateRepository<Device>("PostgreSql", _provider);
+        var deviceRepository = RepositoryFactory.CreateRepository<IDeviceRepository, Device>("PostgreSql", _provider);
         var company = new Company.Company("New Company 1", $"COMP-123-{new Random().Next()}",
             Licensing.Standard, new[] { new Device("SerialNumber1", DeviceType.Standard) });
         await repository.Save(company);

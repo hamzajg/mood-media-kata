@@ -41,6 +41,7 @@ app.MapPost("/api/companies", async ([FromBody] CreateNewCompanyMessage message)
     })
     .WithName("PostCompany")
     .WithOpenApi();
+
 app.MapDelete("/api/company/{id}/devices", async ( [FromRoute] long id,  [FromBody] DeleteDevicesMessage message) =>
     {
         using var messageBus = RabbitHutch.CreateBus("host=127.0.0.1:5672;username=guest;password=guest");

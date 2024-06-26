@@ -9,9 +9,9 @@ public class AddDevicesUseCaseTest : IDisposable
     private readonly AddDevicesUseCase _sut = new (new InMemoryRepository<Location>(), new InMemoryDeviceRepository());
     
     [Fact]
-    public void CanAddDevicesToCompany()
+    public async void CanAddDevicesToCompany()
     {
-        var result = _sut.Execute(new Company.Company("My Company 1", "COMP-123", Licensing.Standard,
+        var result = await _sut.Execute(new Company.Company("My Company 1", "COMP-123", Licensing.Standard,
             new[] { new Device("1", DeviceType.Standard), new Device("2", DeviceType.Custom) }));
         
         Assert.NotEmpty(result);

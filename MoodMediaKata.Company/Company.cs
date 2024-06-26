@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Text.Json.Serialization;
 using MoodMediaKata.App;
 
 namespace MoodMediaKata.Company;
@@ -77,8 +78,10 @@ public class Location : Entity
     
     public string Name { get; private set; }
     public string Address { get; private set; }
+    [JsonIgnore]
     public Device Device { get; private set; }
     public override long Id { get; protected set; } = IdGenerator.NextId(nameof(Location));
+    [JsonIgnore]
     public Company Company { get; private set; }
 }
 
