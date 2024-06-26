@@ -17,8 +17,8 @@ public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase, Dele
                     payload.Devices.Select(dto=> new Device(dto.SerialNumber, (DeviceType)Enum.Parse(typeof(DeviceType), dto.Type) )));
                 break;
             case MessageType.DeleteDevices:
-                Console.WriteLine(JsonSerializer.Serialize((message as DeleteDevicesMessage)));
-                deleteDevicesUseCase.Execute((message as DeleteDevicesMessage)!.SerialNumbers);
+                Console.WriteLine(JsonSerializer.Serialize(message as DeleteDevicesMessage));
+                await deleteDevicesUseCase.Execute((message as DeleteDevicesMessage)!.SerialNumbers);
                 break;
             default:
                 throw new NotSupportedException($"{message.MessageType} is not supported.");

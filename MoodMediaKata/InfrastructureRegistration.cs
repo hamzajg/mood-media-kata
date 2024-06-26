@@ -45,6 +45,7 @@ public static class InfrastructureRegistration
         services.AddSingleton<MessageProcessor>(); 
         services.AddSingleton<MessageDispatcher>(); 
         services.AddScoped<CreateNewCompanyMessageHandler>();
+        services.AddScoped<DeleteDevicesMessageHandler>();
         
         string messageProcessorType = null;
         if (args.Length > 0)
@@ -61,6 +62,8 @@ public static class InfrastructureRegistration
         const string queueName = "Q.MoodMediaKata";
         provider.GetService<IBus>()?.PubSub.Subscribe<CreateNewCompanyMessage>(queueName, 
             msg => provider.GetService<CreateNewCompanyMessageHandler>()?.ConsumeAsync(msg));
+        provider.GetService<IBus>()?.PubSub.Subscribe<DeleteDevicesMessage>(queueName, 
+            msg => provider.GetService<DeleteDevicesMessageHandler>()?.ConsumeAsync(msg));
         return provider;
     }
     

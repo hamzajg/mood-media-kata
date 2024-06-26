@@ -6,9 +6,16 @@ namespace MoodMediaKata;
 
 public class CreateNewCompanyMessageHandler(MessageProcessor messageProcessor) : IConsumeAsync<CreateNewCompanyMessage>
 {
-    public Task ConsumeAsync(CreateNewCompanyMessage message, CancellationToken cancellationToken = new CancellationToken())
+    public async Task ConsumeAsync(CreateNewCompanyMessage message, CancellationToken cancellationToken = new CancellationToken())
     {
-        messageProcessor.Process(message);
-        return Task.CompletedTask;
+        await messageProcessor.Process(message);
+    }
+}
+
+public class DeleteDevicesMessageHandler(MessageProcessor messageProcessor) : IConsumeAsync<DeleteDevicesMessage>
+{
+    public async Task ConsumeAsync(DeleteDevicesMessage message, CancellationToken cancellationToken = new CancellationToken())
+    {
+        await messageProcessor.Process(message);
     }
 }
