@@ -33,6 +33,16 @@ public class CreateCompanyUseCaseTest : IDisposable
     }
 
     [Fact]
+    public async void CanCreateNewCompanyWithDeviceSerialNumberGenerated()
+    {
+        var result = await _sut.Execute("My Company 1", "COMP-123", Licensing.Standard,
+            new[] { new Device("", DeviceType.Standard, "1"), new Device("", DeviceType.Custom, "2") });
+        
+        Assert.Equal("SerialNumber1", result.Locations.ElementAt(0).Device.SerialNumber);
+        Assert.Equal("SerialNumber2", result.Locations.ElementAt(1).Device.SerialNumber);
+    }
+
+    [Fact]
     public void CanCreateNewDevices()
     {
         _sut.Execute("My Company 1", "COMP-123", Licensing.Standard,

@@ -34,3 +34,16 @@ public static class IdGenerator
         _startFrom = startFrom;
     }
 }
+
+public class DeviceSerialNumberGenerator
+{
+    // Call APIs, DLL
+    public static string? Next(long id) => $"SerialNumber{id}";
+}
+
+/*
+ 
+ interface IDeviceSerialNumberGenerator -> App Layer
+ 
+class HttpDeviceSerialNumberGenerator : IDeviceSerialNumberGenerator -> Intfra
+*/

@@ -1,7 +1,6 @@
 using EasyNetQ;
 using Microsoft.AspNetCore.Mvc;
 using MoodMediaKata.App;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
