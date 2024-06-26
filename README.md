@@ -100,6 +100,11 @@ graph
 
     subgraph MoodMediaKata
         style MoodMediaKata fill:#f9f,stroke:#333,stroke-width:2px
+        I1[SqlRepository]
+        I2[MongoDbRepository]
+        I3[QueueBusMessageProcessor]
+        I4[ConsoleMessageProcessor]
+        I5[MessagingSubscriber]
         B1[Startup]
         B2[Program]
     end
@@ -119,15 +124,6 @@ graph
         A3[IRepository]
         A4[InMemoryRepository]
     end
-
-    subgraph MoodMediaKata.Infra
-        style MoodMediaKata.Infra fill:#ff9,stroke:#333,stroke-width:2px
-        I1[SqlRepository]
-        I2[MongoDbRepository]
-        I3[QueueBusMessageProcessor]
-        I4[ConsoleMessageProcessor]
-        I5[MessagingSubscriber]
-    end
 ```
 ### Use Cases
 ```mermaid
@@ -135,7 +131,7 @@ graph
 
     CreateCompanyUseCase["Create Company Use Case"]
     DeleteDevicesUseCase["Delete Devices Use Case"]
-    QueryCompanyByIdUseCase["Query Comapny By Id Use Case"]
+    QueryCompanyByIdUseCase["Query Company By Id Use Case"]
 
     style CreateCompanyUseCase fill:#f9c,stroke:#333,stroke-width:2px
     style DeleteDevicesUseCase fill:#f96,stroke:#333,stroke-width:2px
