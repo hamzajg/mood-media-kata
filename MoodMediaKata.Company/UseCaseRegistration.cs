@@ -9,6 +9,7 @@ public static class UseCaseRegistration
         services.AddScoped<CreateCompanyUseCase>();
         services.AddScoped<AddDevicesUseCase>();
         services.AddScoped<DeleteDevicesUseCase>();
+        services.AddScoped<QueryCompanyByIdUseCase>();
         return services;
     }
 }

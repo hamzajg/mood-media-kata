@@ -3,7 +3,7 @@ using MoodMediaKata.App;
 
 namespace MoodMediaKata.Company;
 
-public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase, DeleteDevicesUseCase deleteDevicesUseCase)
+public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase, DeleteDevicesUseCase deleteDevicesUseCase, QueryCompanyByIdUseCase queryCompanyByIdUseCase)
 {
     public async Task Process(Message message)
     {
@@ -20,6 +20,18 @@ public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase, Dele
                 Console.WriteLine(JsonSerializer.Serialize(message as DeleteDevicesMessage));
                 await deleteDevicesUseCase.Execute((message as DeleteDevicesMessage)!.SerialNumbers);
                 break;
+            default:
+                throw new NotSupportedException($"{message.MessageType} is not supported.");
+        }
+    }
+    
+    public async Task<T?> Process<T>(Message message) where T : Entity
+    {
+        switch (message.MessageType)
+        {
+            case MessageType.QueryCompanyById:
+                Console.WriteLine(JsonSerializer.Serialize(message as QueryCompanyByIdMessage));
+                return await queryCompanyByIdUseCase.Execute((message as QueryCompanyByIdMessage)!.CompanyId) as T;
             default:
                 throw new NotSupportedException($"{message.MessageType} is not supported.");
         }

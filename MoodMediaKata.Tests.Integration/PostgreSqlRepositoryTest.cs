@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using MoodMediaKata.App;
 using MoodMediaKata.Company;
+using MoodMediaKata.Database;
+using MoodMediaKata.Repository;
 
 namespace MoodMediaKata.Tests.Integration;
 

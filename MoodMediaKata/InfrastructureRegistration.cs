@@ -2,7 +2,10 @@ using EasyNetQ;
 using Microsoft.Extensions.DependencyInjection;
 using MoodMediaKata.App;
 using MoodMediaKata.Company;
+using MoodMediaKata.Database;
 using MoodMediaKata.Infra;
+using MoodMediaKata.Messaging;
+using MoodMediaKata.Repository;
 
 namespace MoodMediaKata;
 
@@ -46,6 +49,7 @@ public static class InfrastructureRegistration
         services.AddSingleton<MessageDispatcher>(); 
         services.AddScoped<CreateNewCompanyMessageHandler>();
         services.AddScoped<DeleteDevicesMessageHandler>();
+        services.AddScoped<QueryCompanyByIdMessageHandler>();
         
         string messageProcessorType = null;
         if (args.Length > 0)
@@ -64,6 +68,8 @@ public static class InfrastructureRegistration
             msg => provider.GetService<CreateNewCompanyMessageHandler>()?.ConsumeAsync(msg));
         provider.GetService<IBus>()?.PubSub.Subscribe<DeleteDevicesMessage>(queueName, 
             msg => provider.GetService<DeleteDevicesMessageHandler>()?.ConsumeAsync(msg));
+        provider.GetService<IBus>()?.PubSub.Subscribe<QueryCompanyByIdMessage>(queueName, 
+            msg => provider.GetService<QueryCompanyByIdMessageHandler>()?.ConsumeAsync(msg));
         return provider;
     }
     

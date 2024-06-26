@@ -1,6 +1,7 @@
 using EasyNetQ;
 using Microsoft.AspNetCore.Mvc;
 using MoodMediaKata.App;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,16 +28,26 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+using var messageBus = RabbitHutch.CreateBus("host=127.0.0.1:5672;username=guest;password=guest");
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api/companies", Array.Empty<object>)
-    .WithName("GetCompany")
+app.MapGet("/api/companies/{id}", async ([FromRoute] long id) =>
+    {
+        var source = new TaskCompletionSource<CompanyDto>();
+        await messageBus.PubSub.PublishAsync(new QueryCompanyByIdMessage{CompanyId = id}, "Q.MoodMediaKata");
+        await messageBus.PubSub.SubscribeAsync<QueryCompanyByIdResultMessage>("Q.MoodMediaKata",
+            msg =>
+            {
+                source.SetResult(msg.Company);;
+            });
+        return await source.Task;
+    })
+    .WithName("GetCompanyById")
     .WithOpenApi();
 
 app.MapPost("/api/companies", async ([FromBody] CreateNewCompanyMessage message) =>
     {
-        using var messageBus = RabbitHutch.CreateBus("host=127.0.0.1:5672;username=guest;password=guest");
         await messageBus.PubSub.PublishAsync(message, "Q.MoodMediaKata");
     })
     .WithName("PostCompany")
@@ -44,7 +55,6 @@ app.MapPost("/api/companies", async ([FromBody] CreateNewCompanyMessage message)
 
 app.MapDelete("/api/company/{id}/devices", async ([FromRoute] long id, [FromBody] DeleteDevicesMessage message) =>
     {
-        using var messageBus = RabbitHutch.CreateBus("host=127.0.0.1:5672;username=guest;password=guest");
         await messageBus.PubSub.PublishAsync(message, "Q.MoodMediaKata");
     })
     .WithName("DeleteDevices")

@@ -3,6 +3,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using MoodMediaKata;
 using MoodMediaKata.Company;
+using MoodMediaKata.Database;
 
 Console.WriteLine("Hello, World!");
 

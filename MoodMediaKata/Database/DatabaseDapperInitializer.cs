@@ -1,7 +1,7 @@
 using System.Data;
 using Dapper;
 
-namespace MoodMediaKata;
+namespace MoodMediaKata.Database;
 
 public class DatabaseDapperInitializer(IDbConnection dbConnection) : IDatabaseInitializer
 {

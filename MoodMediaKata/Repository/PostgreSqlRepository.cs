@@ -3,7 +3,7 @@ using Dapper;
 using MoodMediaKata.App;
 using MoodMediaKata.Company;
 
-namespace MoodMediaKata;
+namespace MoodMediaKata.Repository;
 
 public class PostgreSqlRepository<T>(IDbConnection dbConnection) : IRepository<T>
     where T : Entity

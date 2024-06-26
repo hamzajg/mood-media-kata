@@ -1,7 +1,7 @@
 using EasyNetQ.AutoSubscribe;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MoodMediaKata;
+namespace MoodMediaKata.Messaging;
 
 public class MessageDispatcher(IServiceProvider provider) : IAutoSubscriberMessageDispatcher
 {

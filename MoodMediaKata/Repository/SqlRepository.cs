@@ -1,6 +1,7 @@
 ﻿using MoodMediaKata.App;
+using MoodMediaKata.Database;
 
-namespace MoodMediaKata;
+namespace MoodMediaKata.Repository;
 
 public class SqlRepository<T>(KataDbContext context) : IRepository<T>
     where T : Entity

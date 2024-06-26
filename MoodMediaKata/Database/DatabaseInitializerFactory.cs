@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
-namespace MoodMediaKata;
+namespace MoodMediaKata.Database;
 
 public static class DatabaseInitializerFactory
 {

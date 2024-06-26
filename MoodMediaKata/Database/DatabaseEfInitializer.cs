@@ -2,7 +2,7 @@ using System.Data;
 using Microsoft.EntityFrameworkCore;
 using MoodMediaKata.Company;
 
-namespace MoodMediaKata;
+namespace MoodMediaKata.Database;
 
 public class DatabaseEfInitializer(KataDbContext dbContext) : IDatabaseInitializer
 {

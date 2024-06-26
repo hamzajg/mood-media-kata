@@ -1,6 +1,6 @@
 using MoodMediaKata.App;
 
-namespace MoodMediaKata;
+namespace MoodMediaKata.Repository;
 
 public class MongoDbRepository<T> : IRepository<T> where T : Entity
 {

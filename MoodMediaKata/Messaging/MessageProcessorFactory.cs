@@ -1,6 +1,6 @@
 using MoodMediaKata.Infra;
 
-namespace MoodMediaKata;
+namespace MoodMediaKata.Messaging;
 
 public class MessageProcessorFactory
 {

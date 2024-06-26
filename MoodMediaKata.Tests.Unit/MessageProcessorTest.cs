@@ -15,7 +15,8 @@ public class MessageProcessorTest : IDisposable
     {
         _sut = new MessageProcessor(new CreateCompanyUseCase(_companyRepository,
             new AddDevicesUseCase(_locationRepository, _deviceRepository)),
-            new DeleteDevicesUseCase(_deviceRepository));
+            new DeleteDevicesUseCase(_deviceRepository),
+            new QueryCompanyByIdUseCase(_companyRepository));
     }
 
     [Fact]

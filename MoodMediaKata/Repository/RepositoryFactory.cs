@@ -3,8 +3,9 @@ using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using MoodMediaKata.App;
 using MoodMediaKata.Company;
+using MoodMediaKata.Database;
 
-namespace MoodMediaKata;
+namespace MoodMediaKata.Repository;
 
 public static class RepositoryFactory
 {
