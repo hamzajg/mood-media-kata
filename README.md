@@ -197,3 +197,22 @@ dotnet run --db-orm=ef --repository=Sql --message-processor=rabbitmq
 ```sh
 dotnet run --db-orm=ef --repository=MongoDb --message-processor=rabbitmq
 ```
+
+## Tests
+
+```sh
+dotnet test MoodMediaKata.Tests.Unit/MoodMediaKata.Tests.Unit.csproj
+dotnet test MoodMediaKata.Tests.Integration/MoodMediaKata.Tests.Integration.csproj
+```
+
+The unit suite needs no infrastructure. The integration suite exercises the
+Dapper repositories against PostgreSQL, so start that service first:
+
+```sh
+docker compose -f docker-compose.infra.yml up -d postgres
+```
+
+It uses the connection string in `DatabaseInitializerFactory`, which matches
+the credentials in `docker-compose.infra.yml` (`postgres` / `V3ryS3cr3t`,
+database `kata_db`). CI runs both suites; the integration job starts a
+`postgres:14.2` service container.
