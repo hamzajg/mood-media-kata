@@ -41,8 +41,14 @@ public class QueryCompanyByIdMessage : Message
 }
 public class QueryCompanyByIdResultMessage : Message
 {
+    /** Dedicated result queue — keeps responses off the request queue. */
+    public const string Queue = "Q.MoodMediaKata.Results";
+
     public override MessageType MessageType { get; set; } = MessageType.QueryCompanyByIdResult;
-    public CompanyDto Company { get; set; }
+    /** Correlates the result to the QueryCompanyByIdMessage.Id that produced it. */
+    public Guid RequestId { get; set; }
+    /** Null when the company does not exist. */
+    public CompanyDto? Company { get; set; }
 }
 
 public class CompanyDto
