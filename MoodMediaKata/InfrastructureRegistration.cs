@@ -44,7 +44,6 @@ public static class InfrastructureRegistration
     
     public static IServiceCollection RegisterInfrastructure(this IServiceCollection services, string[] args)
     {
-        services.AddSingleton(RabbitHutch.CreateBus("host=127.0.0.1:5672;username=guest;password=guest"));
         services.AddSingleton<MessageProcessor>(); 
         services.AddSingleton<MessageDispatcher>(); 
         services.AddScoped<CreateNewCompanyMessageHandler>();
@@ -53,17 +52,29 @@ public static class InfrastructureRegistration
         
         string messageProcessorType = null;
         if (args.Length > 0)
-            messageProcessorType = args.FirstOrDefault(a => a.StartsWith("--message-processor="));;
+            messageProcessorType = args.FirstOrDefault(a => a.StartsWith("--message-processor="));
 
         if (string.IsNullOrEmpty(messageProcessorType))
             throw new ArgumentException("MessageProcessorType must be provided as a runtime argument.");
-        services.AddSingleton<IMessageProcessor>(_ => MessageProcessorFactory.CreateMessageProcessor(messageProcessorType.Split("=")[1]));
+
+        var processor = messageProcessorType.Split("=")[1];
+
+        // --message-processor=Console runs the app with no broker at all, which is what
+        // local development wants. Waiting for a RabbitMQ connection in that mode used to
+        // make the app hang on startup even when everything else was in-memory.
+        if (string.Equals(processor, "RabbitMq", StringComparison.OrdinalIgnoreCase))
+            services.AddSingleton(RabbitHutch.CreateBus("host=127.0.0.1:5672;username=guest;password=guest"));
+
+        services.AddSingleton<IMessageProcessor>(_ => MessageProcessorFactory.CreateMessageProcessor(processor));
         return services;
     }
     
     public static IServiceProvider AddMessageHandler(this IServiceProvider provider)
     {
         const string queueName = "Q.MoodMediaKata";
+        // No broker registered (Console processor): nothing to subscribe to.
+        if (provider.GetService<IBus>() is null)
+            return provider;
         provider.GetService<IBus>()?.PubSub.Subscribe<CreateNewCompanyMessage>(queueName, 
             msg => provider.GetService<CreateNewCompanyMessageHandler>()?.ConsumeAsync(msg));
         provider.GetService<IBus>()?.PubSub.Subscribe<DeleteDevicesMessage>(queueName, 
