@@ -14,9 +14,11 @@ public class MessageProcessorTest : IDisposable
     public MessageProcessorTest()
     {
         _sut = new MessageProcessor(new CreateCompanyUseCase(_companyRepository,
-            new AddDevicesUseCase(_locationRepository, _deviceRepository)),
+                new AddDevicesUseCase(_locationRepository, _deviceRepository)),
             new DeleteDevicesUseCase(_deviceRepository),
-            new QueryCompanyByIdUseCase(_companyRepository));
+            new QueryCompanyByIdUseCase(_companyRepository),
+            new QueryLocationByIdUseCase(_locationRepository),
+            new AddDevicesToCompanyUseCase(_companyRepository, _locationRepository, _deviceRepository));
     }
 
     [Fact]
@@ -69,6 +71,55 @@ public class MessageProcessorTest : IDisposable
         await _sut.Process(message);
 
         Assert.Empty(_deviceRepository.FindAll());
+    }
+
+    // covers scenario: Add devices to a company
+    [Fact]
+    public async void CanProcessAddDevicesMessageType()
+    {
+        await _sut.Process(new CreateNewCompanyMessage
+        {
+            CompanyName = "My Company 1",
+            CompanyCode = "COMP-123", Licensing = "Standard",
+            Devices = new[] { new DeviceDto { OrderNo = "1", Type = "Standard" } }
+        });
+
+        await _sut.Process(new AddDevicesMessage
+        {
+            CompanyId = 1,
+            Devices = new[] { new DeviceDto { OrderNo = "2", Type = "Custom" } }
+        });
+
+        var company = await _companyRepository.FindOneById(1);
+        Assert.Equal(2, company!.Locations.Count());
+        Assert.Equal("Location 2", company.Locations.Last().Name);
+        Assert.Equal(2, _deviceRepository.FindAll().Count());
+    }
+
+    // covers scenario: Query location by id
+    [Fact]
+    public async void CanProcessQueryLocationByIdMessageType()
+    {
+        await _sut.Process(new CreateNewCompanyMessage
+        {
+            CompanyName = "My Company 1",
+            CompanyCode = "COMP-123", Licensing = "Standard",
+            Devices = new[] { new DeviceDto { SerialNumber = "S1", Type = "Standard" } }
+        });
+
+        var location = await _sut.Process<Location>(new QueryLocationByIdMessage { LocationId = 1 });
+
+        Assert.NotNull(location);
+        Assert.Equal("Location 1", location!.Name);
+        Assert.Equal("S1", location.Device.SerialNumber);
+    }
+
+    // covers scenario: Query unknown location returns nothing
+    [Fact]
+    public async void QueryUnknownLocationReturnsNull()
+    {
+        var location = await _sut.Process<Location>(new QueryLocationByIdMessage { LocationId = 999 });
+        Assert.Null(location);
     }
 
     public void Dispose()

@@ -3,7 +3,9 @@ using MoodMediaKata.App;
 
 namespace MoodMediaKata.Company;
 
-public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase, DeleteDevicesUseCase deleteDevicesUseCase, QueryCompanyByIdUseCase queryCompanyByIdUseCase)
+public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase, DeleteDevicesUseCase deleteDevicesUseCase,
+    QueryCompanyByIdUseCase queryCompanyByIdUseCase, QueryLocationByIdUseCase queryLocationByIdUseCase,
+    AddDevicesToCompanyUseCase addDevicesToCompanyUseCase)
 {
     public async Task Process(Message message)
     {
@@ -20,6 +22,11 @@ public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase, Dele
                 Console.WriteLine(JsonSerializer.Serialize(message as DeleteDevicesMessage));
                 await deleteDevicesUseCase.Execute((message as DeleteDevicesMessage)!.SerialNumbers);
                 break;
+            case MessageType.AddDevices:
+                var addDevices = message as AddDevicesMessage;
+                Console.WriteLine(JsonSerializer.Serialize(addDevices));
+                await addDevicesToCompanyUseCase.Execute(addDevices!.CompanyId, addDevices.Devices);
+                break;
             default:
                 throw new NotSupportedException($"{message.MessageType} is not supported.");
         }
@@ -32,6 +39,9 @@ public class MessageProcessor(CreateCompanyUseCase createNewCompanyUseCase, Dele
             case MessageType.QueryCompanyById:
                 Console.WriteLine(JsonSerializer.Serialize(message as QueryCompanyByIdMessage));
                 return await queryCompanyByIdUseCase.Execute((message as QueryCompanyByIdMessage)!.CompanyId) as T;
+            case MessageType.QueryLocationById:
+                Console.WriteLine(JsonSerializer.Serialize(message as QueryLocationByIdMessage));
+                return await queryLocationByIdUseCase.Execute((message as QueryLocationByIdMessage)!.LocationId) as T;
             default:
                 throw new NotSupportedException($"{message.MessageType} is not supported.");
         }
