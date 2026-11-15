@@ -44,6 +44,8 @@ MoodMediaKata.sln
 │   │                       GET /api/companies/{id}
 │   │                       POST /api/companies          (CreateNewCompanyMessage)
 │   │                       DELETE /api/company/{id}/devices (DeleteDevicesMessage)
+│   │                       POST /api/companies/{id}/devices (AddDevicesMessage)
+│   │                       GET /api/locations/{id}      (QueryLocationById request/response)
 │   └── Dockerfile
 ├── MoodMediaKata.App/      shared kernel: Entity, IdGenerator, Message,
 │   │                       IRepository, InMemoryRepository, IMessageProcessor
@@ -64,6 +66,8 @@ docker-compose.yml / docker-compose.infra.yml
 | GET | `/api/companies/{id}` | — | company detail |
 | POST | `/api/companies` | `CreateNewCompanyMessage` (Id, MessageType `NewCompany`, CompanyName, CompanyCode, Licensing, Devices[]) | create company + locations + devices |
 | DELETE | `/api/company/{id}/devices` | `DeleteDevicesMessage` (SerialNumbers[]) | delete devices |
+| POST | `/api/companies/{id}/devices` | `DeviceDto[]` body → `AddDevicesMessage` {CompanyId, Devices[]} | append devices; each gets `Location {index}` continuing after existing ones, app-generated serials |
+| GET | `/api/locations/{id}` | — | location detail (name/address + device serial/type/companyId); request/response over `Q.MoodMediaKata` → result on `Q.MoodMediaKata.LocationResults`, 10s timeout → 504, unknown → 404 |
 
 Message payloads per README (`createCompany.json`, `deleteDevices.json`
 examples): device `Type` ∈ {`Standard`,`Custom`}; each device gets its own
