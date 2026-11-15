@@ -1,0 +1,35 @@
+name: Docker
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: apis
+            file: MoodMediaKata.APIs/Dockerfile
+            context: .
+          - name: worker
+            file: MoodMediaKata/Dockerfile
+            context: .
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: docker build
+        # No push: the job exists to prove the image still builds.
+        run: docker build --file "${{ matrix.file }}" --tag "ci/mood-media-kata:${{ matrix.name }}" "${{ matrix.context }}"
