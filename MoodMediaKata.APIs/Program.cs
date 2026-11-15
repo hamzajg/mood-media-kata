@@ -42,6 +42,15 @@ await messageBus.PubSub.SubscribeAsync<QueryCompanyByIdResultMessage>(
             tcs.TrySetResult(msg.Company);
     });
 
+var pendingLocationQueries = new ConcurrentDictionary<Guid, TaskCompletionSource<LocationDto?>>();
+await messageBus.PubSub.SubscribeAsync<QueryLocationByIdResultMessage>(
+    QueryLocationByIdResultMessage.Queue,
+    msg =>
+    {
+        if (pendingLocationQueries.TryRemove(msg.RequestId, out var tcs))
+            tcs.TrySetResult(msg.Location);
+    });
+
 app.UseHttpsRedirection();
 
 app.MapGet("/api/companies/{id}", async ([FromRoute] long id) =>
@@ -78,6 +87,36 @@ app.MapDelete("/api/company/{id}/devices", async ([FromRoute] long id, [FromBody
         await messageBus.PubSub.PublishAsync(message, "Q.MoodMediaKata");
     })
     .WithName("DeleteDevices")
+    .WithOpenApi();
+
+app.MapPost("/api/companies/{id}/devices", async ([FromRoute] long id, [FromBody] DeviceDto[] devices) =>
+    {
+        await messageBus.PubSub.PublishAsync(new AddDevicesMessage { CompanyId = id, Devices = devices },
+            "Q.MoodMediaKata");
+    })
+    .WithName("AddDevices")
+    .WithOpenApi();
+
+app.MapGet("/api/locations/{id}", async ([FromRoute] long id) =>
+    {
+        var query = new QueryLocationByIdMessage { LocationId = id };
+        var tcs = new TaskCompletionSource<LocationDto?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        pendingLocationQueries[query.Id] = tcs;
+        try
+        {
+            await messageBus.PubSub.PublishAsync(query, "Q.MoodMediaKata");
+            var completed = await Task.WhenAny(tcs.Task, Task.Delay(TimeSpan.FromSeconds(10)));
+            if (completed != tcs.Task)
+                return Results.StatusCode(StatusCodes.Status504GatewayTimeout);
+            var location = await tcs.Task;
+            return location is null ? Results.NotFound() : Results.Ok(location);
+        }
+        finally
+        {
+            pendingLocationQueries.TryRemove(query.Id, out _);
+        }
+    })
+    .WithName("GetLocationById")
     .WithOpenApi();
 
 app.Run();

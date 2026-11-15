@@ -49,6 +49,8 @@ public static class InfrastructureRegistration
         services.AddScoped<CreateNewCompanyMessageHandler>();
         services.AddScoped<DeleteDevicesMessageHandler>();
         services.AddScoped<QueryCompanyByIdMessageHandler>();
+        services.AddScoped<AddDevicesMessageHandler>();
+        services.AddScoped<QueryLocationByIdMessageHandler>();
         
         string messageProcessorType = null;
         if (args.Length > 0)
@@ -81,6 +83,10 @@ public static class InfrastructureRegistration
             msg => provider.GetService<DeleteDevicesMessageHandler>()?.ConsumeAsync(msg));
         provider.GetService<IBus>()?.PubSub.Subscribe<QueryCompanyByIdMessage>(queueName, 
             msg => provider.GetService<QueryCompanyByIdMessageHandler>()?.ConsumeAsync(msg));
+        provider.GetService<IBus>()?.PubSub.Subscribe<AddDevicesMessage>(queueName, 
+            msg => provider.GetService<AddDevicesMessageHandler>()?.ConsumeAsync(msg));
+        provider.GetService<IBus>()?.PubSub.Subscribe<QueryLocationByIdMessage>(queueName, 
+            msg => provider.GetService<QueryLocationByIdMessageHandler>()?.ConsumeAsync(msg));
         return provider;
     }
     
