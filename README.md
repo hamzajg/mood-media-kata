@@ -198,6 +198,23 @@ dotnet run --db-orm=ef --repository=Sql --message-processor=rabbitmq
 dotnet run --db-orm=ef --repository=MongoDb --message-processor=rabbitmq
 ```
 
+### REST API (MoodMediaKata.APIs)
+
+All endpoints publish messages to `Q.MoodMediaKata`; the worker processes
+them. Queries are request/response: the API publishes the query, the worker
+answers on a dedicated results queue, correlated by message id.
+
+| Method | Path | Body | Result |
+|---|---|---|---|
+| POST | `/api/companies` | `CreateNewCompanyMessage` | 200 (async) |
+| GET | `/api/companies/{id}` | — | company DTO, 404 unknown, 504 on timeout |
+| DELETE | `/api/company/{id}/devices` | `DeleteDevicesMessage` | 200 (async) |
+| POST | `/api/companies/{id}/devices` | `DeviceDto[]` | 200 (async) — appends devices; each gets `Location {index}` continuing after existing ones |
+| GET | `/api/locations/{id}` | — | location DTO (name/address + device serial/type/companyId), 404 unknown, 504 on timeout |
+
+Device DTO shape: `{ "OrderNo": "1", "SerialNumber": "", "Type": "Standard"|"Custom" }`
+— an empty `SerialNumber` is generated app-side.
+
 ## Tests
 
 ```sh
