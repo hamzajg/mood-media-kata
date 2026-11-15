@@ -10,7 +10,10 @@ public enum MessageType
     NewCompany,
     DeleteDevices,
     QueryCompanyById,
-    QueryCompanyByIdResult
+    QueryCompanyByIdResult,
+    AddDevices,
+    QueryLocationById,
+    QueryLocationByIdResult
 }
 
 public class DeleteDevicesMessage : Message
@@ -57,4 +60,39 @@ public class CompanyDto
     public string Name { get; set; }
     public string Code { get; set; }
     public string Licensing { get; set; }
+}
+
+public class AddDevicesMessage : Message
+{
+    public override MessageType MessageType { get; set; } = MessageType.AddDevices;
+    public long CompanyId { get; set; }
+    public DeviceDto[] Devices { get; set; }
+}
+
+public class QueryLocationByIdMessage : Message
+{
+    public override MessageType MessageType { get; set; } = MessageType.QueryLocationById;
+    public long LocationId { get; set; }
+}
+
+public class QueryLocationByIdResultMessage : Message
+{
+    /** Dedicated result queue — keeps responses off the request queue. */
+    public const string Queue = "Q.MoodMediaKata.LocationResults";
+
+    public override MessageType MessageType { get; set; } = MessageType.QueryLocationByIdResult;
+    /** Correlates the result to the QueryLocationByIdMessage.Id that produced it. */
+    public Guid RequestId { get; set; }
+    /** Null when the location does not exist. */
+    public LocationDto? Location { get; set; }
+}
+
+public class LocationDto
+{
+    public long Id { get; set; }
+    public string Name { get; set; }
+    public string Address { get; set; }
+    public long CompanyId { get; set; }
+    public string DeviceSerialNumber { get; set; }
+    public string DeviceType { get; set; }
 }
